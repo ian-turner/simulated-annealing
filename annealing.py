@@ -21,7 +21,8 @@ class Sim:
         self.path = np.arange(num_points)
 
         # plot setup
-        self.fig, self.axs = plt.subplots(1, 2)
+        self.fig, self.axs = plt.subplots(1, 2, figsize=(10,4))
+
         ax = self.axs[1]
         self.energy_plot, = ax.plot([], [], color='green')
         ax.set_title('Energy')
@@ -94,12 +95,17 @@ def main():
     parser = ArgumentParser()
     parser.add_argument('num_points', type=int, default=15)
     parser.add_argument('Kmax', type=int, default=2000)
+    parser.add_argument('--save_file', type=str, default='')
 
     args = parser.parse_args()
 
     sim = Sim(args.num_points, args.Kmax)
     anim = FuncAnimation(fig=sim.fig, func=sim.update, interval=10, frames=sim.Kmax, repeat=False)
-    plt.show()
+
+    if args.save_file != '':
+        anim.save(args.save_file)
+    else:
+        plt.show()
 
 
 if __name__ == '__main__':
